@@ -1,0 +1,15 @@
+@import '../../styles/base.scss';
+
+.container {
+  @include button;
+}
+
+.sm {
+  border: 1px solid green;
+}
+.md {
+  border: 1px solid red;
+}
+.lg {
+  border: 1px solid blue;
+}

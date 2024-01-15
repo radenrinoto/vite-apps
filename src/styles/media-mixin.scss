@@ -1,0 +1,7 @@
+$screen-sm-limit: 576px;
+
+@mixin apply-at-sm-size {
+  @media(max-width: $screen-sm-limit) {
+    @content;
+  }
+}

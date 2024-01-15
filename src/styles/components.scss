@@ -1,0 +1,17 @@
+@import './media-mixin.scss';
+
+@mixin card {
+  border: 1px solid blue;
+  min-height: 200px;
+  min-width: 100px;
+}
+
+@mixin button {
+  // background-color: red;
+  color: black;
+  min-width: 80px;
+  text-align: center;
+  max-height: 30px;
+  padding: 1rem;
+  border-radius: 16px;
+}
