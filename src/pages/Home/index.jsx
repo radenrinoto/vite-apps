@@ -1,48 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
-import Button from '../../components/Button';
+import { callAPI } from '../../domain/api';
 
 import classes from './style.module.scss';
 
 const Home = () => {
-  const [count, setCount] = useState(0);
-  const navigate = useNavigate();
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    console.log('Did Mount')
-  },[])
+    fetchData()
+    console.log('did mount')
+  }, [])
 
-  useEffect(() => {
-    console.log('Did Mount')
-    return (() => {
-      console.log('will unmount')
+  const fetchData = async () => {
+    const response = await callAPI('/all', 'GET');
+    const modifiedData = response?.map((item) => {
+      return {
+        name: item.name,
+        flags: item.flags,
+        population: item.population,
+      }
     })
-  },[])
-
-  useEffect(() => {
-    console.log('Did Update')
-  },[count])
-
-  const navigateToProduct = () => {
-    const user = {
-      id: 1,
-      name: 'rino'
-    }
-    navigate('/products', { state: user })
-  }
+    setData(modifiedData);
+  } 
 
   return (
     <div className={classes.container}>
       <div className={classes.title}>
         Home
       </div>
-      {count}
-      <Button onClick={() => setCount(count + 1)} />
-      <Button text="Navigate" onClick={navigateToProduct} />
     </div>
-
   )
 }
 
-export default Home
+export default Home;

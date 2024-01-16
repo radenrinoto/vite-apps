@@ -1,18 +1,13 @@
 @import '../../styles/base.scss';
 
 .container {
-  border: 1px solid red;
   @include directionX;
   .title {
-    color: red;
     font-size: 22px;
   }
   .box {
     @include card;
     background-color: $color-primary-blue;
-    @include apply-at-sm-size {
-      background-color: red;
-    }
     .title {
       color: blue;
       font-size: 22px;
