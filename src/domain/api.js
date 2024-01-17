@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://restcountries.com/v3.1';
+const baseUrl = 'https://www.themealdb.com/api/json/v1/1';
 
 export const callAPI = async (endpoint, method, headers = {}, params = {}, data = {}) => {
 
