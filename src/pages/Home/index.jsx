@@ -1,41 +1,64 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { callAPI } from '../../domain/api';
+import {
+  fetchPokemon,
+  setUsernameDispatcher,
+  setStep
+} from './action';
+
+import Component1 from './components/component1';
+import Component2 from './components/component2';
 
 import classes from './style.module.scss';
 
 const Home = () => {
-  const [data, setData] = useState(null);
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
+  const pokemon = useSelector((state) => state.homeReducer.pokemon);
+  const usernameState = useSelector((state) => state.homeReducer.username);
+  const currentStep = useSelector((state) => state.homeReducer.step)
+
+  console.log(currentStep, '<< CUR STEP')
   useEffect(() => {
-    fetchData()
+    dispatch(fetchPokemon())
   }, []);
 
-  const fetchData = async () => {
-    const responseByCategories = await callAPI('/filter.php?c=Beef', 'GET');
-    const slicedResponse = responseByCategories?.meals?.slice(0, 10);
+  const onSubmit = () => {
+    dispatch(setUsernameDispatcher({
+      username,
+      password
+    }))
+  }
 
-    const modifiedResponse = slicedResponse?.map(async (item) => {
-      const responseByName = await callAPI(`/search.php?s=${item.strMeal}`, 'GET');
-      const { idMeal, strIngredient1, strMeasure1, strMealThumb, strMeal } = responseByName.meals[0];
-      return {
-        idMeal,
-        strIngredient1,
-        strMeasure1,
-        strMealThumb,
-        strMeal
-      }
-    });
+  const stepHanlder = () => {
+    if (currentStep === 5) {
+      dispatch(setStep(1))
+    } else {
+      dispatch(setStep(currentStep + 1))
+    }
+  }
 
-    const finalResponse = await Promise.all(modifiedResponse);
-    setData(finalResponse);
-  };
+  const renderComponent = () => {
+    switch (currentStep) {
+      case 1:
+        return <Component1 />
+      case 2:
+        return <Component2 />
+      default:
+        return <Component1 />
+        break;
+    }
+  }
 
   return (
     <div className={classes.container}>
-      <div className={classes.title}>
-        Home
-      </div>
+      {renderComponent()}
+      {/* <input onChange={(e) => setUsername(e.target.value)} placeholder='username' />
+      <input onChange={(e) => setPassword(e.target.value)} placeholder='username' /> */}
+      <button onClick={stepHanlder}>Next</button>
     </div>
   );
 };
